@@ -1,6 +1,74 @@
 # Bookstore
 Una aplicación basada en microservicios, que trata de una librería, donde hay usuarios y libros, pudiendo hacer préstamos. Toda la app tiene que estar segurizada con JWT, además hay que crear un streamer de logs para tener un registro de logs de lo que pasa en la app, todos se tiene que poder gestionar desde un front en REACT + Typescript
 
+## Stack Tecnológico
+
+### Backend:
+
+Framework: Spring Boot 3.x
+Seguridad: Spring Security + JWT
+Gateway: Spring Cloud Gateway
+Comunicación entre servicios: Spring Cloud OpenFeign / RestTemplate
+Mensajería: Spring Kafka
+WebSockets: Spring WebSocket
+
+
+### Bases de Datos:
+
+PostgreSQL: Para servicios de Usuarios y Préstamos (transaccionales)
+MongoDB: Para servicio de Libros (flexible para metadatos, mejores capacidades de búsqueda)
+Elasticsearch: Para logging centralizado
+
+
+
+### Microservicios (Spring Boot)
+#### 1. Servicio de Usuarios
+
+Base de datos: PostgreSQL
+
+Responsabilidades:
+
+Gestión de usuarios y roles
+Perfil de usuario
+Historial de actividad
+Produce eventos a Kafka para auditoría
+
+
+
+2. Servicio de Libros
+
+Base de datos: MongoDB
+
+Responsabilidades:
+
+CRUD de libros
+Búsqueda avanzada mediante MongoDB
+Gestión de géneros/categorías
+Produce eventos a Kafka cuando el inventario cambia
+
+
+
+3. Servicio de Préstamos
+
+Base de datos: PostgreSQL
+
+Responsabilidades:
+
+Gestión de préstamos y devoluciones
+Fechas de vencimiento y multas
+Verificación de disponibilidad
+Comunicación con Servicio de Libros mediante Feign/RestTemplate
+
+
+
+4. Servicio de Notificaciones
+
+Responsabilidades:
+
+Suscriptor de Kafka para eventos
+Envío de notificaciones en tiempo real vía WebSockets
+Almacenamiento de notificaciones no leídas
+
 ## Arquitectura
 ![Arquitectura](https://github.com/user-attachments/assets/c16d27e1-9634-4c26-9874-e83191981288)
 
