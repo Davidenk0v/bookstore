@@ -1,4 +1,4 @@
-package com.bookstore.users.controllers;
+package com.bookstore.books.controllers;
 
 import com.bookstore.users.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
-public class UserController {
+public class BookController {
 
     @Autowired
     private UserServices userServices;
