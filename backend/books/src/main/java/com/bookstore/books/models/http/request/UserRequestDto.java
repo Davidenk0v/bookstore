@@ -1,6 +1,6 @@
 package com.bookstore.books.models.http.request;
 
-import com.bookstore.users.models.dtos.UserDto;
+import com.bookstore.books.models.dtos.UserDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.bookstore.books.models.dtos;
 
-import com.bookstore.users.models.enums.ERole;
+import com.bookstore.books.models.enums.EStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +12,18 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BookDto {
 
-        private Long id;
 
-        private String name;
+    private String isbn;
 
-        private String email;
+    private String title;
 
-        private ERole role;
+    private String author;
+
+    private String category;
+
+    private EStatus status;
+
+    private Integer available_quantity;
+
+    private Integer total_quantity;
     }

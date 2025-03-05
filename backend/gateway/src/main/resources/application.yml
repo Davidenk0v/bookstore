@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: book-service
+          uri: lb://book-service
+          predicates:
+            - Path=/api/v1/book/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/user/**
+    loadbalancer:
+      clients:
+        - name: book-service
+          service-ids: book-service
+          servers:
+            - http://localhost:8083
+            - http://localhost:8093
+        - name: user-service
+          service-ids: user-service
+          servers:
+            - http://localhost:8082
+            - http://localhost:8092

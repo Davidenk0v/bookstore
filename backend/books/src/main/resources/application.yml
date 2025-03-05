@@ -1,0 +1,21 @@
+# Configuración general de la aplicación
+spring:
+  application:
+    name: book-service
+# Configuración del servidor
+  cloud:
+    gateway:
+      httpclient:
+        response-timeout: 5000ms  # Tiempo de espera para recibir una respuesta (ajústalo según tus necesidades)
+        connect-timeout: 3000ms   # Tiempo de espera para establecer la conexión
+server:
+  port: 8083
+  # Configuración de MongoDB
+  data:
+    mongodb:
+      uri: mongodb://admin:password123@localhost:27017/book_db
+      database: book_db
+
+
+
+

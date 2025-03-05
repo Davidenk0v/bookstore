@@ -1,36 +1,33 @@
 package com.bookstore.books.models.entities;
 
-import com.bookstore.users.models.enums.ERole;
-import jakarta.persistence.*;
+import com.bookstore.books.models.enums.EStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "users")
+
+@Document(collection = "books")
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String isbn;
 
-    @Column
-    private String name;
+    private String title;
 
-    @Column
-    private String username;
+    private String author;
 
-    @Column
-    private String email;
+    private String category;
 
-    @Column
-    private String password;
+    private EStatus status;
 
-    @Column
-    private ERole role;
+    private Integer available_quantity;
+
+    private Integer total_quantity;
 }
