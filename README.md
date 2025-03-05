@@ -69,6 +69,9 @@ Suscriptor de Kafka para eventos
 Envío de notificaciones en tiempo real vía WebSockets
 Almacenamiento de notificaciones no leídas
 
+## Bases de datos
+![base de datos](https://github.com/user-attachments/assets/85bd2040-ed1c-44ac-ac78-b324eef5cef7)
+
 ## Arquitectura
 ![Arquitectura](https://github.com/user-attachments/assets/c16d27e1-9634-4c26-9874-e83191981288)
 
