@@ -38,7 +38,8 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     public ResponseEntity<?> newBorrow(BorrowRequestDto request) {
         BorrowResponseDto response = new BorrowResponseDto();
-        UserRequestDto userRequest = userClient.getUserById(request.getUserId());
+        Object user = userClient.getUserById(request.getUserId());
+        UserRequestDto userRequest = userClient.getUserById(request.getUserId()).getBody();
         BookRequestDto bookRequest = bookClient.getBookByIsbn(request.getBookId());
         if(userRequest.getStatus() == HttpStatus.NOT_FOUND){
             response.setMessage("User not found");

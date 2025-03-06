@@ -25,12 +25,12 @@ public class BookController {
 
     @GetMapping("/{isbn}")
     public ResponseEntity<?> getBook(@PathVariable String isbn) {
-        return ResponseEntity.ok(bookServices.getBookByIbsn(isbn));
+        return bookServices.getBookByIbsn(isbn);
     }
 
     @GetMapping("/title/{title}")
     public ResponseEntity<?> getBookByTitle(@PathVariable String title) {
-        return ResponseEntity.ok(bookServices.getBookByTitle(title));
+        return bookServices.getBookByTitle(title);
     }
 
     @GetMapping("/delete")
@@ -40,12 +40,12 @@ public class BookController {
 
     @GetMapping("/category/{category}")
     public ResponseEntity<?> getBooksByCategory(@PathVariable String category) {
-        return ResponseEntity.ok(bookServices.getBooksByCategory(category));
+        return bookServices.getBooksByCategory(category);
     }
 
     @GetMapping("/author/{author}")
     public ResponseEntity<?> getBooksByAuthor(@PathVariable String author) {
-        return ResponseEntity.ok(bookServices.getBooksByAuthor(author));
+        return bookServices.getBooksByAuthor(author);
     }
 
 }

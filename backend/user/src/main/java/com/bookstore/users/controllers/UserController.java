@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("/userId/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userServices.getUser(id));
+        return userServices.getUser(id);
     }
 
     @GetMapping("/delete")

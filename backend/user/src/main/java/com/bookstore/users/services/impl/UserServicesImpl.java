@@ -39,6 +39,8 @@ public class UserServicesImpl implements UserServices {
             userReponseDto.setData(List.of(userDto));
             return ResponseEntity.ok(userReponseDto);
         }
+        userReponseDto.setMessage("User not found");
+        userReponseDto.setStatus(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(userReponseDto, HttpStatus.NOT_FOUND);
     }
 
