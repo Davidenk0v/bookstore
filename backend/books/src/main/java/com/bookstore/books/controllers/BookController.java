@@ -38,5 +38,14 @@ public class BookController {
         return bookServices.deleteBook(id);
     }
 
+    @GetMapping("/category/{category}")
+    public ResponseEntity<?> getBooksByCategory(@PathVariable String category) {
+        return ResponseEntity.ok(bookServices.getBooksByCategory(category));
+    }
+
+    @GetMapping("/author/{author}")
+    public ResponseEntity<?> getBooksByAuthor(@PathVariable String author) {
+        return ResponseEntity.ok(bookServices.getBooksByAuthor(author));
+    }
 
 }

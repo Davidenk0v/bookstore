@@ -1,6 +1,6 @@
 package com.bookstore.books.models.entities;
 
-import com.bookstore.books.models.enums.EStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,21 +13,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Builder
 
-@Document(collection = "books")
-public class Book {
+@Document(collection = "categories")
+public class Category {
 
     @Id
-    private String isbn;
-
-    private String title;
-
-    private Author author;
-
-    private Category category;
-
-    private EStatus status;
-
-    private Integer available_quantity;
-
-    private Integer total_quantity;
+    private String id;
+    private String name;
 }
