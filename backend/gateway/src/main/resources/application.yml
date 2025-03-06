@@ -15,6 +15,10 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/user/**
+        - id: borrow-service
+          uri: lb://borrow-service
+          predicates:
+            - Path=/api/v1/borrow/**
     loadbalancer:
       clients:
         - name: book-service
@@ -27,3 +31,8 @@ spring:
           servers:
             - http://localhost:8082
             - http://localhost:8092
+        - name: borrow-service
+          service-ids: borrow-service
+          servers:
+            - http://localhost:8084
+            - http://localhost:8094

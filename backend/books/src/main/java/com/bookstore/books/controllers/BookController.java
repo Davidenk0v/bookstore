@@ -28,6 +28,11 @@ public class BookController {
         return ResponseEntity.ok(bookServices.getBookByIbsn(isbn));
     }
 
+    @GetMapping("/title/{title}")
+    public ResponseEntity<?> getBookByTitle(@PathVariable String title) {
+        return ResponseEntity.ok(bookServices.getBookByTitle(title));
+    }
+
     @GetMapping("/delete")
     public ResponseEntity<?> deleteBook(String id) {
         return bookServices.deleteBook(id);

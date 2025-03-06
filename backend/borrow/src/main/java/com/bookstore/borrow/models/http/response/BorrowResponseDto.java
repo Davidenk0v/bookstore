@@ -1,7 +1,6 @@
-package com.bookstore.users.models.http.response;
+package com.bookstore.borrow.models.http.response;
 
-import com.bookstore.users.models.dtos.UserDto;
-import jakarta.validation.constraints.NotNull;
+import com.bookstore.borrow.models.dtos.BorrowDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,17 +9,16 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class UserReponseDto {
+public class BorrowResponseDto {
 
-    @NotNull
     private String message;
 
-    private List<UserDto> data;
+    private List<BorrowDto> data;
 
-    @NotNull
     private HttpStatus status;
 }

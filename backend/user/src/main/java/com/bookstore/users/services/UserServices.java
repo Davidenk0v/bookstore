@@ -1,21 +1,20 @@
 package com.bookstore.users.services;
 
 import com.bookstore.users.models.entities.User;
+import com.bookstore.users.models.http.response.UserReponseDto;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 
 public interface UserServices {
     User saveUser(User user);
 
-    User getUser(Long id);
+    ResponseEntity<UserReponseDto> getUser(Long id);
 
     User updateUser(User user);
 
     ResponseEntity<?> deleteUser(Long id);
 
-    User getUserByEmail(String email);
+    ResponseEntity<UserReponseDto> getUserByEmail(String email);
 
-    List<User> getAllUsers();
+    ResponseEntity<UserReponseDto> getAllUsers();
 }

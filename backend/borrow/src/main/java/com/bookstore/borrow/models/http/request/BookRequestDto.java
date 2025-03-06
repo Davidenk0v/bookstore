@@ -1,11 +1,11 @@
-package com.bookstore.users.models.http.response;
+package com.bookstore.borrow.models.http.request;
 
-import com.bookstore.users.models.dtos.UserDto;
-import jakarta.validation.constraints.NotNull;
+import com.bookstore.borrow.models.dtos.BookDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -14,13 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserReponseDto {
+public class BookRequestDto {
 
-    @NotNull
     private String message;
 
-    private List<UserDto> data;
+    private List<BookDto> data;
 
-    @NotNull
     private HttpStatus status;
 }

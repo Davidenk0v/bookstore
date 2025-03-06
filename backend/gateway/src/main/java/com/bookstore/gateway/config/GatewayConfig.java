@@ -14,6 +14,8 @@ public class GatewayConfig {
                         .uri("http://localhost:8083"))  // URL del microservicio de libros
                 .route("user-service", r -> r.path("/api/v1/user/**")
                         .uri("http://localhost:8082"))  // URL del microservicio de usuarios
+                .route("borrow-service", r -> r.path("/api/v1/borrow/**")
+                        .uri("http://localhost:8084"))  // URL del microservicio de prestamos
                 .build();
     }
 }

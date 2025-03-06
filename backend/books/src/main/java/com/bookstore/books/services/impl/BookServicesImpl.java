@@ -35,7 +35,7 @@ public class BookServicesImpl implements BookServices {
         if(optionalBook.isPresent()) {
             bookResponseDto.setMessage("Book found");
             bookResponseDto.setStatus(HttpStatus.OK);
-            BookDto bookDto = dtoMapper.entityToDto(optionalBook.get());
+            BookDto bookDto = (BookDto) dtoMapper.entityToDto(optionalBook.get());
             bookResponseDto.setData(List.of(bookDto));
             return ResponseEntity.ok(bookResponseDto);
         }
@@ -62,7 +62,7 @@ public class BookServicesImpl implements BookServices {
         if(optionalBook.isPresent()) {
             bookResponseDto.setMessage("Book found");
             bookResponseDto.setStatus(HttpStatus.OK);
-            BookDto bookDto = dtoMapper.entityToDto(optionalBook.get());
+            BookDto bookDto = (BookDto) dtoMapper.entityToDto(optionalBook.get());
             bookResponseDto.setData(List.of(bookDto));
             return ResponseEntity.ok(bookResponseDto);
         }
