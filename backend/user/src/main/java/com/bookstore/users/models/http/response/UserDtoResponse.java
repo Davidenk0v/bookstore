@@ -1,7 +1,6 @@
-package com.bookstore.users.models.dtos;
+package com.bookstore.users.models.http.response;
 
 import com.bookstore.users.models.enums.ERole;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserDto {
+public class UserDtoResponse {
+
 
         private Long id;
 
@@ -19,9 +19,7 @@ public class UserDto {
 
         private String username;
 
-        private String password;
-
         private String email;
 
         private ERole role;
-    }
+}

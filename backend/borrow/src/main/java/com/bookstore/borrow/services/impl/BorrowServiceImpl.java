@@ -22,6 +22,9 @@ import java.util.Optional;
 
 @Service
 public class BorrowServiceImpl implements BorrowService {
+    
+    @Autowired
+    private KafkaService kafkaService;
 
     @Autowired
     private UserClient userClient;
@@ -50,6 +53,7 @@ public class BorrowServiceImpl implements BorrowService {
             try {
                 response.setData(List.of(createNewBorrow(request)));
                 response.setMessage("Borrow created");
+                kafkaService.sendMessage("Borrow created with id: " + response.getData().get(0).getId() + " by user: " + response.getData().get(0).getUserId());
                 response.setStatus(HttpStatus.CREATED);
             }catch (Exception e){
                 response.setMessage("Error creating borrow");

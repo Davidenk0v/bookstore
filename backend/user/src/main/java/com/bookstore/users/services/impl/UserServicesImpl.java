@@ -2,7 +2,8 @@ package com.bookstore.users.services.impl;
 
 import com.bookstore.users.models.dtos.UserDto;
 import com.bookstore.users.models.entities.User;
-import com.bookstore.users.models.http.response.UserReponseDto;
+import com.bookstore.users.models.http.response.UserDtoResponse;
+import com.bookstore.users.models.http.response.UserReponse;
 import com.bookstore.users.repositories.UserRepository;
 import com.bookstore.users.services.UserServices;
 import com.bookstore.users.utils.UserMapper;
@@ -23,24 +24,36 @@ public class UserServicesImpl implements UserServices {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private KafkaService kafkaService;
+
     @Override
-    public UserReponseDto saveUser(User user) {
-        userRepository.save(user);
-        UserReponseDto userReponseDto = new UserReponseDto();
-        userReponseDto.setMessage("User created");
-        userReponseDto.setStatus(HttpStatus.CREATED);
-        userReponseDto.setData(List.of(userMapper.entityToDto(user)));
-        return userReponseDto;
+    public UserReponse saveUser(User user) {
+        try {
+            userRepository.save(user);
+            UserReponse userReponseDto = new UserReponse();
+            userReponseDto.setMessage("User created");
+            userReponseDto.setStatus(HttpStatus.CREATED);
+            userReponseDto.setData(List.of(userMapper.entityToResponseDto(user)));
+            kafkaService.sendMessage("User created with id: " + user.getId());
+            return userReponseDto;
+        }catch (Exception e){
+            UserReponse userReponseDto = new UserReponse();
+            userReponseDto.setMessage("Error creating user");
+            userReponseDto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            kafkaService.sendMessage("Error creating user with id: " + user.getId());
+            return userReponseDto;
+        }
     }
 
     @Override
-    public ResponseEntity<UserReponseDto> getUser(Long id) {
-        UserReponseDto userReponseDto = new UserReponseDto();
+    public ResponseEntity<UserReponse> getUser(Long id) {
+        UserReponse userReponseDto = new UserReponse();
         Optional<User> optinalUser = userRepository.findById(id);
         if(optinalUser.isPresent()){
             userReponseDto.setMessage("User found");
             userReponseDto.setStatus(HttpStatus.OK);
-            UserDto userDto = userMapper.entityToDto(optinalUser.get());
+            UserDtoResponse userDto = userMapper.entityToResponseDto(optinalUser.get());
             userReponseDto.setData(List.of(userDto));
             return ResponseEntity.ok(userReponseDto);
         }
@@ -61,13 +74,13 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public ResponseEntity<UserReponseDto> getUserByEmail(String email) {
-        UserReponseDto userReponseDto = new UserReponseDto();
+    public ResponseEntity<UserReponse> getUserByEmail(String email) {
+        UserReponse userReponseDto = new UserReponse();
         Optional<User> optinalUser = userRepository.findByEmail(email);
         if(optinalUser.isPresent()){
             userReponseDto.setMessage("User found");
             userReponseDto.setStatus(HttpStatus.OK);
-            UserDto userDto = userMapper.entityToDto(optinalUser.get());
+            UserDtoResponse userDto = userMapper.entityToResponseDto(optinalUser.get());
             userReponseDto.setData(List.of(userDto));
             return ResponseEntity.ok(userReponseDto);
         }
@@ -75,9 +88,9 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public ResponseEntity<UserReponseDto> getAllUsers() {
+    public ResponseEntity<UserReponse> getAllUsers() {
         List<User> users = userRepository.findAll();
-        UserReponseDto userReponseDto = new UserReponseDto();
+        UserReponse userReponseDto = new UserReponse();
         if(users.isEmpty()){
             userReponseDto.setMessage("No users found");
             userReponseDto.setStatus(HttpStatus.NOT_FOUND);
@@ -89,10 +102,10 @@ public class UserServicesImpl implements UserServices {
         return ResponseEntity.ok(userReponseDto);
     }
 
-    //METODOS PARA COMUNICACIÓN CON EL SERVICIO DE BORROW
+    //METODOS PARA COMUNICACIÓN CON LOS SERVICIOS
     @Override
-    public UserReponseDto findUserById(Long id) {
-        UserReponseDto userReponseDto = new UserReponseDto();
+    public UserReponse findUserById(Long id) {
+        UserReponse userReponseDto = new UserReponse();
         Optional<User> optinalUser = userRepository.findById(id);
         if(optinalUser.isPresent()){
             userReponseDto.setMessage("User found");
@@ -107,8 +120,8 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public UserReponseDto findUserByEmail(String email) {
-        UserReponseDto userReponseDto = new UserReponseDto();
+    public UserReponse findUserByEmail(String email) {
+        UserReponse userReponseDto = new UserReponse();
         Optional<User> optinalUser = userRepository.findByEmail(email);
         if(optinalUser.isPresent()){
             userReponseDto.setMessage("User found");
@@ -121,9 +134,23 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public UserReponseDto findAllUsers() {
+    public UserReponse findUserByUsername(String username) {
+        UserReponse userReponseDto = new UserReponse();
+        Optional<User> optinalUser = userRepository.findByUsername(username);
+        if(optinalUser.isPresent()){
+            userReponseDto.setMessage("User found");
+            userReponseDto.setStatus(HttpStatus.OK);
+            UserDto userDto = userMapper.entityToDto(optinalUser.get());
+            userReponseDto.setData(List.of(userDto));
+            return userReponseDto;
+        }
+        return userReponseDto;
+    }
+
+    @Override
+    public UserReponse findAllUsers() {
         List<User> users = userRepository.findAll();
-        UserReponseDto userReponseDto = new UserReponseDto();
+        UserReponse userReponseDto = new UserReponse();
         if(users.isEmpty()){
             userReponseDto.setMessage("No users found");
             userReponseDto.setStatus(HttpStatus.NOT_FOUND);

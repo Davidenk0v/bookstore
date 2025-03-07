@@ -21,6 +21,9 @@ public interface UserClient {
     @GetMapping("/find-by-email/{email}")
     public UserRequest getUserByEmail(@PathVariable String email);
 
+    @GetMapping("/find-by-username/{username}")
+    public UserRequest getUserByUsername(@PathVariable String username);
+
     @PostMapping("/add")
     public UserRequest saveUser(@RequestBody UserDto user);
 }

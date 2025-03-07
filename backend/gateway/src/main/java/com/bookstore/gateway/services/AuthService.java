@@ -33,24 +33,26 @@ public class AuthService {
 
 
 
-//    public ResponseEntity<?> login(AuthRequest login) throws Exception {
-//
-//        Optional<UserEntity> userOptional = userRepository.findByEmail(login.getEmail());
-//        //Primero comprobamos si el user existe en la base de datos
-//        if (userOptional.isEmpty()) {
-//            return new ResponseEntity<>("Usuario no registrado", HttpStatus.NOT_FOUND);
-//        }
-//
-//        //Si existe comprobamos si la contraseña introducida es correcta
-//        if (verifyPassword(login.getPassword(), userOptional.get().getPassword())) {
-//            String token = jwtUtilityService.generateToken(userOptional.get().getIdUser());
-//            String refreshToken = jwtUtilityService.generateRefreshToken(userOptional.get().getIdUser());
-//
-//            return new ResponseEntity<>(new AuthResponse(token, refreshToken), HttpStatus.OK);
-//
-//        }
-//        return new ResponseEntity<>("Contraseña incorrecta", HttpStatus.UNAUTHORIZED);
-//    }
+    public ResponseEntity<?> login(AuthRequest login) throws Exception {
+
+        UserRequest request = userClient.getUserByUsername(login.getUsername());
+        //Primero comprobamos si el user existe en la base de datos
+        if (request.getStatus() == HttpStatus.NOT_FOUND) {
+            return new ResponseEntity<>("Usuario no registrado", HttpStatus.NOT_FOUND);
+        }
+        UserDto user = request.getData().get(0);
+        //Si existe comprobamos si la contraseña introducida es correcta
+        if (verifyPassword(login.getPassword(), user.getPassword())) {
+            String token = jwtUtilityService.generateToken(user.getId());
+            String refreshToken = jwtUtilityService.generateRefreshToken(user.getId());
+            AuthResponse response = new AuthResponse();
+            response.setToken(token);
+            response.setMessage("Login correcto");
+            response.setRefreshToken(refreshToken);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Contraseña incorrecta", HttpStatus.UNAUTHORIZED);
+    }
 
 
 //    public ResponseEntity<?> refresh(RefreshRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException, JOSEException {

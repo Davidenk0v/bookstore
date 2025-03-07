@@ -1,27 +1,29 @@
 package com.bookstore.users.services;
 
 import com.bookstore.users.models.entities.User;
-import com.bookstore.users.models.http.response.UserReponseDto;
+import com.bookstore.users.models.http.response.UserReponse;
 import org.springframework.http.ResponseEntity;
 
 
 public interface UserServices {
-    UserReponseDto saveUser(User user);
+    UserReponse saveUser(User user);
 
-    ResponseEntity<UserReponseDto> getUser(Long id);
+    ResponseEntity<UserReponse> getUser(Long id);
 
     User updateUser(User user);
 
     ResponseEntity<?> deleteUser(Long id);
 
-    ResponseEntity<UserReponseDto> getUserByEmail(String email);
+    ResponseEntity<UserReponse> getUserByEmail(String email);
 
-    ResponseEntity<UserReponseDto> getAllUsers();
+    ResponseEntity<UserReponse> getAllUsers();
 
     //METODOS PARA COMUNICACIÓN CON EL SERVICIO DE BORROW
-    UserReponseDto findUserById(Long id);
+    UserReponse findUserById(Long id);
 
-    UserReponseDto findUserByEmail(String email);
+    UserReponse findUserByEmail(String email);
 
-    UserReponseDto findAllUsers();
+    UserReponse findUserByUsername(String username);
+
+    UserReponse findAllUsers();
 }

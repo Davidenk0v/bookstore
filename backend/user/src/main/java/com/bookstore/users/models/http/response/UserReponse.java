@@ -14,12 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserReponseDto {
+public class UserReponse {
 
     @NotNull
     private String message;
 
-    private List<UserDto> data;
+    private List<?> data;
 
     @NotNull
     private HttpStatus status;

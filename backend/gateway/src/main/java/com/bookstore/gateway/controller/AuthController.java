@@ -23,10 +23,10 @@ public class AuthController {
     }
 
 
-//    @PostMapping("/login")
-//    private ResponseEntity<?> login (@RequestBody AuthRequest request) throws Exception{
-//        return authService.login(request);
-//    }
+    @PostMapping("/login")
+    private ResponseEntity<?> login (@RequestBody AuthRequest request) throws Exception{
+        return authService.login(request);
+    }
 
 //    @PostMapping("/refresh")
 //    private ResponseEntity<?> refresh (@RequestBody RefreshRequest request) throws Exception{
