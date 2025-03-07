@@ -24,8 +24,13 @@ public class UserServicesImpl implements UserServices {
     private UserMapper userMapper;
 
     @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public UserReponseDto saveUser(User user) {
+        userRepository.save(user);
+        UserReponseDto userReponseDto = new UserReponseDto();
+        userReponseDto.setMessage("User created");
+        userReponseDto.setStatus(HttpStatus.CREATED);
+        userReponseDto.setData(List.of(userMapper.entityToDto(user)));
+        return userReponseDto;
     }
 
     @Override
@@ -82,6 +87,52 @@ public class UserServicesImpl implements UserServices {
         userReponseDto.setStatus(HttpStatus.OK);
         userReponseDto.setData(userMapper.entityListToResponseDtoList(users));
         return ResponseEntity.ok(userReponseDto);
+    }
+
+    //METODOS PARA COMUNICACIÓN CON EL SERVICIO DE BORROW
+    @Override
+    public UserReponseDto findUserById(Long id) {
+        UserReponseDto userReponseDto = new UserReponseDto();
+        Optional<User> optinalUser = userRepository.findById(id);
+        if(optinalUser.isPresent()){
+            userReponseDto.setMessage("User found");
+            userReponseDto.setStatus(HttpStatus.OK);
+            UserDto userDto = userMapper.entityToDto(optinalUser.get());
+            userReponseDto.setData(List.of(userDto));
+            return userReponseDto;
+        }
+        userReponseDto.setMessage("User not found");
+        userReponseDto.setStatus(HttpStatus.NOT_FOUND);
+        return userReponseDto;
+    }
+
+    @Override
+    public UserReponseDto findUserByEmail(String email) {
+        UserReponseDto userReponseDto = new UserReponseDto();
+        Optional<User> optinalUser = userRepository.findByEmail(email);
+        if(optinalUser.isPresent()){
+            userReponseDto.setMessage("User found");
+            userReponseDto.setStatus(HttpStatus.OK);
+            UserDto userDto = userMapper.entityToDto(optinalUser.get());
+            userReponseDto.setData(List.of(userDto));
+            return userReponseDto;
+        }
+        return userReponseDto;
+    }
+
+    @Override
+    public UserReponseDto findAllUsers() {
+        List<User> users = userRepository.findAll();
+        UserReponseDto userReponseDto = new UserReponseDto();
+        if(users.isEmpty()){
+            userReponseDto.setMessage("No users found");
+            userReponseDto.setStatus(HttpStatus.NOT_FOUND);
+            return userReponseDto;
+        }
+        userReponseDto.setMessage("Users found");
+        userReponseDto.setStatus(HttpStatus.OK);
+        userReponseDto.setData(userMapper.entityListToResponseDtoList(users));
+        return userReponseDto;
     }
 
 }

@@ -1,8 +1,6 @@
 package com.bookstore.books.services.impl;
 
 import com.bookstore.books.models.dtos.BookDto;
-import com.bookstore.books.models.entities.Author;
-import com.bookstore.books.models.entities.Category;
 import com.bookstore.books.models.http.response.BookResponseDto;
 import com.bookstore.books.repositories.AuthorRepository;
 import com.bookstore.books.repositories.CategoryRepository;
@@ -124,6 +122,39 @@ public class BookServicesImpl implements BookServices {
         bookResponseDto.setStatus(HttpStatus.OK);
         bookResponseDto.setData(dtoMapper.entityListToResponseDtoList(books));
         return ResponseEntity.ok(bookResponseDto);
+    }
+
+    //Estos metodos son especificos para comunicarse con el servicio de borrow
+    @Override
+    public BookResponseDto findBookByTitle(String title) {
+        BookResponseDto bookResponseDto = new BookResponseDto();
+        Optional<Book> optionalBook = bookRepository.findByTitle(title);
+        if(optionalBook.isPresent()) {
+            bookResponseDto.setMessage("Book found");
+            bookResponseDto.setStatus(HttpStatus.OK);
+            BookDto bookDto = (BookDto) dtoMapper.entityToDto(optionalBook.get());
+            bookResponseDto.setData(List.of(bookDto));
+            return bookResponseDto;
+        }
+        bookResponseDto.setMessage("Book not found");
+        bookResponseDto.setStatus(HttpStatus.NOT_FOUND);
+        return bookResponseDto;
+    }
+
+    @Override
+    public BookResponseDto findBookByIbsn(String ibsn) {
+        BookResponseDto bookResponseDto = new BookResponseDto();
+        Optional<Book> optionalBook = bookRepository.findByIsbn(ibsn);
+        if(optionalBook.isPresent()) {
+            bookResponseDto.setMessage("Book found");
+            bookResponseDto.setStatus(HttpStatus.OK);
+            BookDto bookDto = (BookDto) dtoMapper.entityToDto(optionalBook.get());
+            bookResponseDto.setData(List.of(bookDto));
+            return bookResponseDto;
+        }
+        bookResponseDto.setMessage("Book not found");
+        bookResponseDto.setStatus(HttpStatus.NOT_FOUND);
+        return bookResponseDto;
     }
 
 }

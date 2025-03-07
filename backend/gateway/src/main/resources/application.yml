@@ -36,3 +36,8 @@ spring:
           servers:
             - http://localhost:8084
             - http://localhost:8094
+
+jwt:
+  secret: "AJ8NkpX1Jvq28Voxb1EOa763EUl39zKfm36z5Gy50bda45AjFU"
+  expiration: 3600000  # 1 hora en milisegundos
+  refreshExpiration: 86400000  # 1 día en milisegundos

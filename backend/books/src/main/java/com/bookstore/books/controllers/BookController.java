@@ -1,6 +1,7 @@
 package com.bookstore.books.controllers;
 
 import com.bookstore.books.models.entities.Book;
+import com.bookstore.books.models.http.response.BookResponseDto;
 import com.bookstore.books.services.BookServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,17 @@ public class BookController {
     @GetMapping("/author/{author}")
     public ResponseEntity<?> getBooksByAuthor(@PathVariable String author) {
         return bookServices.getBooksByAuthor(author);
+    }
+
+    //ENDPOINT PARA COMUNICAR CON EL SERVICIO DE BORROW
+    @GetMapping("/find-by-isbn/{isbn}")
+    public BookResponseDto findBookByIsbn(@PathVariable String isbn) {
+        return bookServices.findBookByIbsn(isbn);
+    }
+
+    @GetMapping("/find-by-title/{title}")
+    public BookResponseDto findBookByTitle(@PathVariable String title) {
+        return bookServices.findBookByTitle(title);
     }
 
 }

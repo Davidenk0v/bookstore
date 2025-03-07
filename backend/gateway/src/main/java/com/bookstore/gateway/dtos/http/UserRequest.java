@@ -1,6 +1,6 @@
-package com.bookstore.books.models.http.response;
+package com.bookstore.gateway.dtos.http;
 
-import com.bookstore.books.models.dtos.BookDto;
+import com.bookstore.gateway.dtos.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookResponseDto {
-
+public class UserRequest {
 
     private String message;
 
-    private List<BookDto> data;
+    private List<UserDto> data;
 
     private HttpStatus status;
 }

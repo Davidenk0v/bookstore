@@ -1,7 +1,6 @@
 package com.bookstore.books.models.http.request;
 
 import com.bookstore.books.models.dtos.UserDto;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,11 +13,9 @@ import org.springframework.http.HttpStatus;
 @Builder
 public class UserRequestDto {
 
-    @NotNull
     private String message;
 
     private UserDto user;
 
-    @NotNull
     private HttpStatus status;
 }

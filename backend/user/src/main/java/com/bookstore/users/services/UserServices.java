@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 
 public interface UserServices {
-    User saveUser(User user);
+    UserReponseDto saveUser(User user);
 
     ResponseEntity<UserReponseDto> getUser(Long id);
 
@@ -17,4 +17,11 @@ public interface UserServices {
     ResponseEntity<UserReponseDto> getUserByEmail(String email);
 
     ResponseEntity<UserReponseDto> getAllUsers();
+
+    //METODOS PARA COMUNICACIÓN CON EL SERVICIO DE BORROW
+    UserReponseDto findUserById(Long id);
+
+    UserReponseDto findUserByEmail(String email);
+
+    UserReponseDto findAllUsers();
 }

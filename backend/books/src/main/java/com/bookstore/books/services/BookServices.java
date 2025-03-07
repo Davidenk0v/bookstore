@@ -21,4 +21,8 @@ public interface BookServices {
     ResponseEntity<BookResponseDto> getBooksByAuthor(String author);
 
     ResponseEntity<BookResponseDto> getBooksByCategory(String categoryName);
+
+    BookResponseDto findBookByTitle(String title);
+
+    BookResponseDto findBookByIbsn(String ibsn);
 }
