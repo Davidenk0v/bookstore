@@ -1,6 +1,7 @@
 package com.bookstore.borrow.models.dtos;
 
 import com.bookstore.borrow.models.enums.EStatus;
+import com.bookstore.borrow.models.enums.EStatusBorrow;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class BorrowDto {
 
     private Date returnDate;
 
-    private EStatus status;
+    private EStatusBorrow status;
 
     private Integer penalty;
 }

@@ -28,4 +28,15 @@ public class BorrowController {
     public ResponseEntity<?> newBorrow(@RequestBody BorrowRequestDto request) {
         return ResponseEntity.ok(borrowService.newBorrow(request));
     }
+
+    @PutMapping("/return/{id}")
+    public ResponseEntity<?> returnBorrow(@PathVariable Long id) {
+        return ResponseEntity.ok(borrowService.returnBorrow(id));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getAllBorrowByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(borrowService.getAllBorrowByUserId(userId));
+    }
+
 }

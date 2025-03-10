@@ -26,8 +26,8 @@ public class BookMapper implements IDtoMapper<Book, BookDto, BookResponseDto> {
 
     @Override
     public Book dtoToEntity(BookDto dto) {
-        Optional<Category> category = categoryRepository.findById(dto.getCategoryId());
-        Optional<Author> author = authorRepository.findById(dto.getAuthorId());
+        Optional<Category> category = categoryRepository.findByName(dto.getCategoryName());
+        Optional<Author> author = authorRepository.findByName(dto.getAuthorName());
         Category newCategory = new Category();
         Author newAuthor = new Author();
         if(category.isEmpty()) {
@@ -59,10 +59,10 @@ public class BookMapper implements IDtoMapper<Book, BookDto, BookResponseDto> {
         return BookDto.builder()
                 .isbn(entity.getIsbn())
                 .title(entity.getTitle())
-                .authorId(entity.getAuthor().getId())
+                .authorName(entity.getAuthor().getName())
                 .available_quantity(entity.getAvailable_quantity())
                 .total_quantity(entity.getTotal_quantity())
-                .categoryId(entity.getCategory().getId())
+                .categoryName(entity.getCategory().getName())
                 .status(entity.getStatus())
                 .build();
     }

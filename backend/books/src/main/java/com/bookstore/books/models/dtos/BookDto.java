@@ -17,9 +17,9 @@ public class BookDto {
 
     private String title;
 
-    private String authorId;
+    private String authorName;
 
-    private String categoryId;
+    private String categoryName;
 
     private EStatus status;
 

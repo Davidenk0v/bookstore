@@ -45,9 +45,9 @@ public class UserMapper implements IDtoMapper<User, UserDto, UserDtoResponse> {
     }
 
     @Override
-    public List<UserDto> entityListToResponseDtoList(List<User> entityList) {
+    public List<UserDtoResponse> entityListToResponseDtoList(List<User> entityList) {
         return entityList.stream()
-                .map(this::entityToDto)
+                .map(this::entityToResponseDto)
                 .toList();
     }
 }

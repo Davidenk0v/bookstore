@@ -5,6 +5,7 @@ import com.bookstore.gateway.jwt.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,10 +25,11 @@ public class SecurityConfig {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
+                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers("/api/auth/**").permitAll() // Rutas públicas
-                        .pathMatchers("/api/user/**").authenticated()
-                        .pathMatchers("/api/book/**").authenticated()
-                        .pathMatchers("/api/borrow/**").authenticated()
+                        .pathMatchers("/api/v1/user/**").authenticated()
+                        .pathMatchers("/api/v1/book/**").authenticated()
+                        .pathMatchers("/api/v1/borrow/**").authenticated()
                         .anyExchange().authenticated()
                 )
                 .addFilterAt(jwtAuthenticationFilter(), SecurityWebFiltersOrder.AUTHENTICATION)

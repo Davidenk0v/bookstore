@@ -10,6 +10,9 @@ import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -17,16 +20,16 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class AuthService {
 
     @Autowired
     private UserClient userClient;
+
+    @Autowired
+    private KafkaService kafkaService;
 
     @Autowired
     private JWTUtilityServiceImpl jwtUtilityService;
@@ -49,6 +52,7 @@ public class AuthService {
             response.setToken(token);
             response.setMessage("Login correcto");
             response.setRefreshToken(refreshToken);
+            kafkaService.sendMessage("User logged in with id: " + user.getId());
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
         return new ResponseEntity<>("Contraseña incorrecta", HttpStatus.UNAUTHORIZED);
@@ -106,6 +110,18 @@ public class AuthService {
         } catch (Exception e) {
             throw new Exception(e.toString());
         }
+    }
+
+    public ResponseEntity<?> getMe() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth == null || auth.getPrincipal() == null){
+            return ResponseEntity.badRequest().body("Not token provided");
+        }
+        UserRequest optionalUser = userClient.getUserByUsername(auth.getPrincipal().toString());
+        if(optionalUser.getStatus() == HttpStatus.OK){
+            return ResponseEntity.ok(optionalUser.getData().get(0));
+        }
+        return ResponseEntity.badRequest().body("User not found");
     }
 
     //Metodo para verificar si las contraseñas son iguales

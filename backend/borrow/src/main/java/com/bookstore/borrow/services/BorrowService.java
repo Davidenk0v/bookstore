@@ -13,4 +13,8 @@ public interface BorrowService {
     ResponseEntity<BorrowResponseDto> getBorrowById(Long id);
 
     ResponseEntity<BorrowResponseDto> getAllBorrows();
+
+    ResponseEntity<?> returnBorrow(Long id);
+
+    ResponseEntity<?> getAllBorrowByUserId(Long userId);
 }

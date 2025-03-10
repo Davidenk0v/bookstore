@@ -11,7 +11,7 @@ public class GatewayConfig {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("book-service", r -> r.path("/api/v1/book/**")
-                        .uri("http://localhost:8083"))  // URL del microservicio de libros
+                        .uri("http://localhost:8083"))// URL del microservicio de libros
                 .route("user-service", r -> r.path("/api/v1/user/**")
                         .uri("http://localhost:8082"))  // URL del microservicio de usuarios
                 .route("borrow-service", r -> r.path("/api/v1/borrow/**")

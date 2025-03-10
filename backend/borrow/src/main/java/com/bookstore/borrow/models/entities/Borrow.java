@@ -1,6 +1,7 @@
 package com.bookstore.borrow.models.entities;
 
 import com.bookstore.borrow.models.enums.EStatus;
+import com.bookstore.borrow.models.enums.EStatusBorrow;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +38,7 @@ public class Borrow {
     private Date returnDate;
 
     @Column
-    private EStatus status;
+    private EStatusBorrow status;
 
     @Column
     private Integer penalty;

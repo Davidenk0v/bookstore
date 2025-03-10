@@ -5,13 +5,11 @@ import com.bookstore.gateway.dtos.http.AuthRequest;
 import com.bookstore.gateway.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin("*")
 public class AuthController {
 
     @Autowired
@@ -26,6 +24,11 @@ public class AuthController {
     @PostMapping("/login")
     private ResponseEntity<?> login (@RequestBody AuthRequest request) throws Exception{
         return authService.login(request);
+    }
+
+    @GetMapping("/me")
+    private ResponseEntity<?> me () throws Exception{
+        return authService.getMe();
     }
 
 //    @PostMapping("/refresh")

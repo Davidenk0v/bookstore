@@ -4,6 +4,7 @@ import com.bookstore.borrow.clients.BookClient;
 import com.bookstore.borrow.clients.UserClient;
 import com.bookstore.borrow.models.dtos.BorrowDto;
 import com.bookstore.borrow.models.entities.Borrow;
+import com.bookstore.borrow.models.enums.EStatusBorrow;
 import com.bookstore.borrow.models.http.request.BookRequestDto;
 import com.bookstore.borrow.models.http.request.BorrowRequestDto;
 import com.bookstore.borrow.models.http.request.UserRequestDto;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +57,7 @@ public class BorrowServiceImpl implements BorrowService {
                 response.setMessage("Borrow created");
                 kafkaService.sendMessage("Borrow created with id: " + response.getData().get(0).getId() + " by user: " + response.getData().get(0).getUserId());
                 response.setStatus(HttpStatus.CREATED);
+
             }catch (Exception e){
                 response.setMessage("Error creating borrow");
                 response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -96,14 +99,54 @@ public class BorrowServiceImpl implements BorrowService {
     }
 
     private BorrowDto createNewBorrow (BorrowRequestDto request) {
+        Date now = new Date();
+        int days = request.getDays();
+        Date returnPredictionDate = Date.from(now.toInstant().plus(days, ChronoUnit.DAYS));
         Borrow borrow = Borrow.builder()
                 .userId(request.getUserId())
                 .bookId(request.getBookId())
-                .borrowDate(new Date())
+                .borrowDate(now)
+                .returnPredictionDate(returnPredictionDate)
+                .status(EStatusBorrow.BORROWED)
+                .penalty(0)
                 .build();
         borrowRepository.save(borrow);
         BorrowDto borrowDto = borrowMapper.entityToDto(borrow);
         return borrowDto;
+    }
+
+    @Override
+    public ResponseEntity<?> returnBorrow(Long id) {
+        BorrowResponseDto response = new BorrowResponseDto();
+        Optional<Borrow> optional = borrowRepository.findById(id);
+        if(optional.isPresent()){
+            Borrow borrow = optional.get();
+            borrow.setStatus(EStatusBorrow.RETURNED);
+            borrowRepository.save(borrow);
+            response.setMessage("Borrow returned");
+            response.setStatus(HttpStatus.OK);
+            kafkaService.sendMessage("Borrow returned with id: " + borrow.getId() + " by user: " + borrow.getUserId());
+        }else{
+            response.setMessage("Borrow not found");
+            response.setStatus(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @Override
+    public ResponseEntity<?> getAllBorrowByUserId(Long userId) {
+        BorrowResponseDto response = new BorrowResponseDto();
+        List<Borrow> borrows = borrowRepository.findAllByUserId(userId);
+        if(borrows.isEmpty()){
+            response.setMessage("No borrows found");
+            response.setStatus(HttpStatus.NOT_FOUND);
+        }else{
+            List<BorrowDto> dtos = borrowMapper.entityListToResponseDtoList(borrows);
+            response.setMessage("Borrows found");
+            response.setStatus(HttpStatus.OK);
+            response.setData(dtos);
+        }
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
 }

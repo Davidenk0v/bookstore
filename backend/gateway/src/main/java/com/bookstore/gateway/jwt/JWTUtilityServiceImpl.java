@@ -1,8 +1,12 @@
 package com.bookstore.gateway.jwt;
 
+import com.bookstore.gateway.clients.UserClient;
+import com.bookstore.gateway.dtos.UserDto;
+import com.bookstore.gateway.dtos.http.UserRequest;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import com.nimbusds.jwt.SignedJWT;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,15 +43,30 @@ public class JWTUtilityServiceImpl {
     @Value("${jwt.refreshExpiration}")
     private long refreshValidityInMilliseconds;
 
+    @Autowired
+    private UserClient userClient;
+
 
     //Metodo que genera el token
     public String generateToken(Long userId) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException, JOSEException {
         PrivateKey privateKey = getPrivateKey(privateKeyResource);
         JWSSigner signer = new RSASSASigner(privateKey);
+        UserRequest userRequest = new UserRequest();
+        String userName = "Anonymous";
+        try {
+            userRequest = userClient.getUserById(userId);
+            if(userRequest.getStatus().value() == 200){
+                userName = userRequest.getData().get(0).getUsername();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(userId.toString())
+                .claim("username", userName)
+                .claim("roles", "USER")
                 .issueTime(now)
                 .expirationTime(validity)
                 .build();
