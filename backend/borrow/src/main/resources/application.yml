@@ -1,0 +1,23 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: borrow-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/borrow_db
+    username: postgres
+    password: 1234
+
+  kafka:
+    bootstrapServers: localhost:9092
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
